@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101b35">
+<title>さんすうクエスト</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body data-mode="front" data-stage="0" data-ui-style="reframe">
+<div id="startupLogo" class="startup-logo" aria-hidden="true">
+  <div class="startup-logo__bg" aria-hidden="true"></div>
+  <div class="startup-logo__field">
+    <div class="startup-logo__mark" aria-label="NAOKI presents">
+      <img src="./assets/naoki.png" alt="" class="startup-logo__image">
+      <div class="startup-logo__wordmark">
+        <span class="startup-logo__brand">NAOKI</span>
+        <span class="startup-logo__presents">presents</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const overlay = document.getElementById('startupLogo');
+  const image = overlay?.querySelector('.startup-logo__image');
+  if (!overlay) return;
+
+  let finished = false;
+  let safetyTimer = 0;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    if (safetyTimer) window.clearTimeout(safetyTimer);
+    overlay.remove();
+  };
+
+  overlay.addEventListener('animationend', (event) => {
+    if (event.target === overlay) finish();
+  });
+
+  if (image) {
+    image.addEventListener('error', finish, { once: true });
+  }
+
+  safetyTimer = window.setTimeout(finish, 2600);
+})();
+</script>
+<div id="transitionFx" class="transition-fx" hidden><div class="transition-cover"></div><div class="transition-tiles"></div><div class="transition-grid"></div><div class="transition-core"></div><div class="transition-sigil">✦</div></div>
+
+<section id="titleScreen" class="screen title-screen">
+  <div class="title-bg"></div><div class="title-shade"></div>
+  <div class="title-stars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="title-shell panel-gold">
+    <div class="title-corner corner-tl" aria-hidden="true">✦</div>
+    <div class="title-corner corner-tr" aria-hidden="true">✦</div>
+    <div class="title-corner corner-bl" aria-hidden="true">✦</div>
+    <div class="title-corner corner-br" aria-hidden="true">✦</div>
+
+    <div class="title-topbar">
+      <div class="title-mode-plate"><span class="mode-orb"></span><b id="titleModeName">光の世界</b></div>
+      <div class="title-track"><span>COLLECTION</span><strong id="titleTrackName">0 / 100</strong></div>
+      <div class="title-wallet"><span>所持ゴルド</span><strong id="titleGold">0 G</strong></div>
+      <button id="musicBtn" class="music-entry-btn" type="button" aria-label="BGM鑑賞" title="BGM鑑賞">♫</button>
+      <button id="dataManagementBtn" class="music-entry-btn data-entry-btn" type="button" aria-label="データ管理" title="データ管理">▣</button>
+      <button id="titleUiStyleBtn" class="music-entry-btn ui-style-entry-btn" type="button" aria-label="UIスタイルを切り替える" title="UIスタイルを切り替える"><span>UI</span></button>
+      <span id="debugBadge" class="debug-badge" hidden>DEBUG</span>
+    </div>
+
+    <div class="title-main">
+      <div class="title-copy">
+        <p id="titleEyebrow" class="eyebrow">MATH FANTASY ADVENTURE</p>
+        <div class="title-logo-wrap">
+          <span class="title-logo-gem" aria-hidden="true">◆</span>
+          <h1>さんすう<span>クエスト</span></h1>
+          <span class="title-logo-gem" aria-hidden="true">◆</span>
+        </div>
+        <div class="title-divider" aria-hidden="true"><i></i><b>✦</b><i></i></div>
+        <p id="titleSubtitle" class="title-sub">計算で道をひらき、魔王を倒せ。</p>
+
+        <nav class="title-menu" aria-label="メインメニュー">
+          <button id="playBtn" class="menu-btn primary"><span class="menu-glyph">⚔</span><span>ぼうけんを はじめる</span></button>
+          <button id="shopBtn" class="menu-btn"><span class="menu-glyph">◆</span><span>ショップ</span></button>
+          <button id="collectionBtn" class="menu-btn"><span class="menu-glyph">✦</span><span>コレクション</span></button>
+          <button id="monsterBookBtn" class="menu-btn monster-book-btn"><span class="menu-glyph">◆</span><span>モンスター図鑑</span></button>
+          <button id="mistakeBookBtn" class="menu-btn mistake-book-btn"><span class="menu-glyph">✎</span><span>まちがいノート</span></button>
+          <button id="worldWarpBtn" class="menu-btn secret" hidden><span class="menu-glyph">∞</span><span>世界を渡る</span></button>
+          <button id="backWorldBtn" class="menu-btn secret" hidden><span class="menu-glyph">∞</span><span>ウラステージへ</span></button>
+          <button id="frontWorldBtn" class="menu-btn secret-back" hidden><span class="menu-glyph">↩</span><span>光の世界へ</span></button>
+        </nav>
+
+        <div class="title-caption"><span></span><p id="titleGradeGuide">学習のめやす｜小学校1〜2年生中心</p><span></span></div>
+        <button id="creditsBtn" class="title-credit-link" type="button" aria-label="クレジットと利用条件を表示">© 2026 NAOKI · CREDITS / 利用条件</button>
+      </div>
+
+      <div class="title-art">
+        <div class="hero-aura" aria-hidden="true"></div>
+        <img id="titleHero" src="./assets/hero.png" alt="主人公">
+        <div class="hero-pedestal" aria-hidden="true"><i></i><b>QUEST</b><i></i></div>
+      </div>
+    </div>
+
+    <div class="rule-grid">
+      <div><span class="rule-icon">◷</span><div><strong>60</strong><span>びょう</span><small>1もんの制限時間</small></div></div>
+      <div><span class="rule-icon">◇</span><div><strong>3</strong><span>たく</span><small>こたえを選択</small></div></div>
+      <div><span class="rule-icon">◆</span><div><strong>3</strong><span>ライフ</span><small>3ミスでステージ再挑戦</small></div></div>
+      <div><span class="rule-icon">★</span><div><strong id="titleQuestionCount">75</strong><span>もん</span><small id="titleQuestionRuleNote">全5ステージ</small></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="worldWarpScreen" class="screen sub-screen world-warp-screen" hidden>
+  <div class="sub-bg"></div>
+  <div class="sub-shell panel-gold world-warp-shell">
+    <header class="sub-header"><div><small>WORLD CROSSING</small><h2>世界を渡る</h2></div></header>
+    <div id="worldWarpList" class="world-warp-list"></div>
+    <footer class="sub-footer"><button id="worldWarpBackBtn" class="back-btn">タイトルにもどる</button></footer>
+  </div>
+</section>
+
+<section id="dataManagementScreen" class="screen sub-screen" hidden>
+  <div class="sub-bg"></div>
+  <div class="sub-shell panel-gold data-shell">
+    <header class="sub-header"><div><small>SAVE DATA</small><h2>データ管理</h2></div></header>
+    <div class="data-management-body">
+      <section class="data-info-card">
+        <strong>このゲームのセーブについて</strong>
+        <p>コレクション、モンスター図鑑、まちがいノート、世界の解放状況、BGM、各種記録などは、この端末のこのブラウザ内に自動保存されます。正常なセーブは復旧用として1世代だけ自動バックアップします。</p>
+      </section>
+      <section class="data-status-card" aria-label="セーブ状態">
+        <div><span>現在のセーブ</span><strong id="dataStatusMain">確認中</strong></div>
+        <div><span>自動バックアップ</span><strong id="dataStatusBackup">確認中</strong></div>
+        <div><span>破損データの退避</span><strong id="dataStatusCorrupt">確認中</strong></div>
+      </section>
+      <p id="dataManagementNotice" class="data-notice" hidden></p>
+      <section class="data-delete-zone">
+        <div><strong>セーブデータを削除</strong><p>現在のセーブ、自動バックアップ、破損時の退避データをこのブラウザからすべて削除します。</p></div>
+        <button id="dataDeleteBtn" class="menu-btn pause-danger data-delete-btn" type="button">すべてのセーブデータを削除</button>
+      </section>
+    </div>
+    <footer class="sub-footer"><button id="dataManagementBackBtn" class="back-btn">タイトルにもどる</button></footer>
+  </div>
+</section>
+
+<div id="dataDeleteConfirm" class="data-delete-confirm" hidden role="dialog" aria-modal="true" aria-labelledby="dataDeleteConfirmTitle">
+  <section class="pause-card pause-confirm panel-gold">
+    <small>DELETE SAVE DATA</small>
+    <h2 id="dataDeleteConfirmTitle">セーブデータを削除しますか？</h2>
+    <p><strong>この操作は元に戻せません。</strong><br>コレクション、モンスター図鑑、まちがいノート、世界の解放状況、BGM、記録などに加え、自動バックアップと破損時の退避データもすべて削除します。</p>
+    <div class="pause-actions">
+      <button id="dataDeleteCancelBtn" class="menu-btn primary" type="button">キャンセル</button>
+      <button id="dataDeleteConfirmBtn" class="menu-btn pause-danger" type="button">削除する</button>
+    </div>
+  </section>
+</div>
+
+<section id="mistakeBookScreen" class="screen sub-screen mistake-book-screen" hidden>
+  <div class="sub-bg"></div>
+  <div class="sub-shell panel-gold mistake-book-shell">
+    <header class="sub-header mistake-book-header">
+      <div><small>MISTAKE NOTEBOOK</small><h2>まちがいノート</h2></div>
+      <div class="wallet mistake-book-count"><span>復習中</span><strong id="mistakeBookCount">0 問</strong></div>
+    </header>
+    <div class="mistake-book-body">
+      <div class="mistake-book-toolbar">
+        <p>間違えた問題はこの端末に保存されます。「もう大丈夫」を押すと復習対象から外れます。同じ問題をもう一度間違えた場合は、再び登録されます。</p>
+        <button id="mistakeBookClearBtn" class="menu-btn pause-danger mistake-book-clear-btn" type="button">すべてもう大丈夫</button>
+      </div>
+      <div id="mistakeBookList" class="mistake-book-list" aria-live="polite"></div>
+    </div>
+    <footer class="sub-footer"><button id="mistakeBookBackBtn" class="back-btn">タイトルにもどる</button></footer>
+  </div>
+</section>
+
+<div id="mistakeBookClearConfirm" class="data-delete-confirm mistake-book-clear-confirm" hidden role="dialog" aria-modal="true" aria-labelledby="mistakeBookClearConfirmTitle">
+  <section class="pause-card pause-confirm panel-gold">
+    <small>MISTAKE NOTEBOOK</small>
+    <h2 id="mistakeBookClearConfirmTitle">すべて「もう大丈夫」にしますか？</h2>
+    <p><strong>現在のまちがいノートを空にします。</strong><br>この操作は元に戻せません。ただし、同じ問題を今後もう一度間違えた場合は、まちがいノートへ再登録されます。</p>
+    <div class="pause-actions">
+      <button id="mistakeBookClearCancelBtn" class="menu-btn primary" type="button">キャンセル</button>
+      <button id="mistakeBookClearConfirmBtn" class="menu-btn pause-danger" type="button">すべてもう大丈夫</button>
+    </div>
+  </section>
+</div>
+
+<section id="creditsScreen" class="screen sub-screen" hidden>
+  <div class="sub-bg"></div>
+  <div class="sub-shell panel-gold credits-shell">
+    <header class="sub-header"><div><small>CREDITS / TERMS OF USE</small><h2>クレジット・利用条件</h2></div></header>
+    <div class="credits-body">
+      <section class="credits-creator-card">
+        <img src="./assets/naoki.png" alt="NAOKI" class="credits-naoki-logo">
+        <small>CREATED BY</small>
+        <strong>NAOKI</strong>
+        <p>さんすうクエスト</p>
+        <a href="https://github.com/naoki496/ess_quest_0000" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+      </section>
+      <section class="credits-terms-card" aria-labelledby="creditsTermsTitle">
+        <div class="credits-terms-head"><small>CUSTOM EDUCATIONAL USE TERMS</small><h3 id="creditsTermsTitle">教育・学習目的利用条件</h3></div>
+        <p class="credits-copyright">Copyright © 2026 NAOKI. Except as expressly permitted below, all rights reserved.</p>
+        <ol>
+          <li><strong>対象範囲</strong><span><code>assets/</code> 以下を除く、本作品のソースコード、文章、UI構成その他の制作物を対象とします。</span></li>
+          <li><strong>教育・学習・研究目的での利用</strong><span>非商用の教育・学習・研究を目的とする場合に限り、内容の参照、学習・分析のための複製、改変、一部コードの流用を認めます。学習・研究のために作品全体を手元へ複製して調査することも差し支えありません。</span></li>
+          <li><strong>クレジット表示</strong><span>本作品の一部を流用・改変した成果物を公開または配布する場合は、流用元として「さんすうクエスト」および制作者「NAOKI」を明示してください。可能な場合は本リポジトリへの参照も併記してください。</span></li>
+          <li><strong>禁止事項</strong><span>営利・商用を目的とする利用、販売・有償提供、ならびに本作品の全部または大部分を実質的に複製して別作品として公開・配布・転用することは禁止します。</span></li>
+          <li><strong>Assetsについて</strong><span><code>assets/</code> 以下の画像、音楽、効果音その他の素材は、この利用許諾の対象外です。本表示は、それらの転載・再配布・流用を許可するものではありません。利用する場合は別途権利関係を確認してください。</span></li>
+          <li><strong>その他</strong><span>この利用条件はCreative Commonsライセンスではなく、本作品独自の許諾条件です。上記で明示的に認めた範囲を除き、著作権その他の権利は留保されます。</span></li>
+        </ol>
+      </section>
+    </div>
+    <footer class="sub-footer"><button id="creditsBackBtn" class="back-btn">タイトルにもどる</button></footer>
+  </div>
+</section>
+
+<section id="shopScreen" class="screen sub-screen" hidden>
+  <div class="sub-bg"></div>
+  <div class="sub-shell panel-gold shop-shell">
+    <header class="sub-header"><div><small>ITEM SHOP</small><h2>ショップ</h2></div><div class="wallet">所持 <strong id="shopGold">0 G</strong></div></header>
+    <div id="shopFilters" class="filters"></div>
+    <div class="shop-layout">
+      <div class="shop-viewport"><div id="shopList" class="shop-list"></div></div>
+      <aside id="shopDetail" class="shop-detail" aria-live="polite"><div class="shop-detail-icon">◆</div><small>ITEM SHOP</small><h3>アイテムを えらぼう</h3><p>一覧からアイテムを選ぶと、ここに詳細が表示されます。</p></aside>
+    </div>
+    <footer class="sub-footer"><button id="shopBackBtn" class="back-btn">タイトルにもどる</button></footer>
+  </div>
+</section>
+
+<section id="collectionScreen" class="screen sub-screen" hidden>
+  <div class="sub-bg"></div>
+  <div class="sub-shell panel-gold collection-shell">
+    <header class="sub-header"><div><small>COLLECTION</small><h2>コレクション</h2></div><div class="wallet collection-wallet"><span>NORMAL</span><strong id="collectionCount">0 / 100</strong></div></header>
+    <div class="collection-layout">
+      <div class="collection-grid-wrap">
+        <section class="collection-section normal-items-section" aria-label="通常アイテム">
+          <div class="collection-section-head"><div><small>NORMAL ITEMS</small><b>収集アイテム</b></div><span>購入・報酬で集める100品</span></div>
+          <div id="collectionGrid" class="collection-grid"></div>
+        </section>
+        <section class="collection-section secret-items-section" aria-label="シークレットレリック">
+          <div class="collection-section-head secret-section-head"><div><small>SECRET RELICS</small><b>シークレットレリック</b></div><strong id="collectionSecretCount">0 / ??</strong></div>
+          <div id="secretRelicGrid" class="collection-grid secret-relic-grid"></div>
+        </section>
+      </div>
+      <aside id="collectionDetail" class="collection-detail"><div class="detail-icon">?</div><h3>アイテムを えらぼう</h3><p>手に入れたアイテムの詳細を鑑賞できます。説明文は入手後にだけ解放されます。</p></aside>
+    </div>
+    <footer class="sub-footer"><button id="collectionBackBtn" class="back-btn">タイトルにもどる</button></footer>
+  </div>
+</section>
+
+<section id="monsterBookScreen" class="screen sub-screen monster-book-screen" hidden>
+  <div class="sub-bg"></div>
+  <div class="sub-shell panel-gold monster-book-shell">
+    <header class="sub-header monster-book-header"><div><small>MONSTER ENCYCLOPEDIA</small><h2>モンスター図鑑</h2></div><div class="wallet"><strong id="monsterBookCount">0 / 40</strong></div></header>
+    <div id="monsterBookFilters" class="filters monster-book-filters"></div>
+    <div class="monster-book-viewport"><div id="monsterBookGrid" class="monster-book-grid"></div></div>
+    <footer class="sub-footer"><button id="monsterBookBackBtn" class="back-btn">タイトルにもどる</button></footer>
+  </div>
+  <div id="monsterCardOverlay" class="monster-card-overlay" hidden>
+    <article id="monsterCard" class="monster-card" role="dialog" aria-modal="true">
+      <button id="monsterCardClose" class="monster-card-close" aria-label="閉じる">×</button>
+      <div id="monsterCardRarity" class="monster-card-rarity">★</div>
+      <h3 id="monsterCardName">MONSTER</h3>
+      <div class="monster-card-art"><img id="monsterCardImage" alt="モンスター"></div>
+      <div class="monster-card-info">
+        <div class="monster-card-meta">
+          <span id="monsterCardWorld">光の世界</span>
+          <span id="monsterCardStage">STAGE 1</span>
+          <span id="monsterCardEncounter">遭遇 1</span>
+        </div>
+        <p id="monsterCardText">モンスターの記録。</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div id="musicOverlay" class="music-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="musicTitle">
+  <section class="music-card panel-gold">
+    <header class="music-header">
+      <div><small>BGM COLLECTION</small><h2 id="musicTitle">BGM鑑賞</h2></div>
+      <button id="musicCloseBtn" class="music-close-btn" type="button" aria-label="閉じる">×</button>
+    </header>
+    <div id="musicWorldTabs" class="music-world-tabs" role="tablist" aria-label="世界を選択"></div>
+    <section class="music-world-summary" aria-live="polite">
+      <div class="music-world-summary-copy">
+        <small id="musicWorldStatus">WORLD LIBRARY</small>
+        <strong id="musicWorldTitle">光の世界</strong>
+      </div>
+      <div class="music-unlock-summary">
+        <span id="musicUnlockCount">0 / 7 TRACKS UNLOCKED</span>
+        <div class="music-unlock-meter" aria-hidden="true"><i id="musicUnlockFill"></i></div>
+      </div>
+    </section>
+    <p class="music-note">一度到達したステージやボス戦のBGMが解禁されます。</p>
+    <div id="musicTrackList" class="music-track-list"></div>
+    <footer class="music-player-bar">
+      <div class="music-player-main">
+        <div class="music-now">
+          <small>NOW PLAYING</small>
+          <strong id="musicNowTitle">曲を選んでください</strong>
+          <span id="musicNowWhere">解禁済みの曲をタップすると再生します。</span>
+        </div>
+        <div class="music-seek-row">
+          <span id="musicElapsed">0:00</span>
+          <input id="musicSeek" type="range" min="0" max="1000" value="0" step="1" aria-label="再生位置" disabled>
+          <span id="musicDuration">--:--</span>
+        </div>
+      </div>
+      <div class="music-controls">
+        <button id="musicPrevBtn" type="button" aria-label="前の曲">◀</button>
+        <button id="musicPlayBtn" type="button" aria-label="再生・一時停止">▶</button>
+        <button id="musicNextBtn" type="button" aria-label="次の曲">▶▶</button>
+        <button id="musicStopBtn" type="button" aria-label="停止">■</button>
+      </div>
+    </footer>
+  </section>
+</div>
+
+<div id="debugOverlay" class="debug-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="debugTitle">
+  <section class="debug-card panel-gold">
+    <header class="debug-header"><div><small>DEVELOPER MODE</small><h2 id="debugTitle">デバッグ全解放</h2></div><button id="debugCloseBtn" type="button" aria-label="閉じる">×</button></header>
+    <p class="debug-copy">通常セーブは変更しません。ON状態はこのタブを閉じると自動解除されます。</p>
+    <div class="debug-state-row"><span>仮想全解放</span><strong id="debugStatus">OFF</strong><button id="debugToggleBtn" type="button">仮想全解放をON</button></div>
+    <section id="debugStagePanel" class="debug-stage-panel" hidden>
+      <small>STAGE JUMP</small><p>確認したいステージの最初、またはボス5問目へ直接移動します。</p><div id="debugStageGrid" class="debug-stage-grid"></div>
+    </section>
+  </section>
+</div>
+
+<main id="gameScreen" class="screen game-shell" hidden>
+  <header class="hud panel-gold">
+    <div class="hud-unit"><small>すすみ</small><strong id="progressText">0 / 75</strong></div>
+    <div class="progress-wrap"><div class="progress-meta"><span id="stageLabel">STAGE 1</span><b id="stageName">はじまりの もり</b></div><div class="progress-bar"><i id="progressFill"></i></div></div>
+    <div class="hud-unit"><small>ライフ</small><div id="lifeDisplay" class="hearts" aria-label="ライフ3">◆ ◆ ◆</div></div>
+    <div class="hud-unit timer"><small>のこり</small><strong id="timerText">60</strong><span>びょう</span></div>
+    <div id="compactProgressHud" class="compact-progress-hud modern-battle-hud" aria-label="通常問題 0 / 10">
+      <div class="compact-progress-track" aria-hidden="true"><i id="compactProgressFill"></i></div>
+      <strong id="compactProgressText">0 / 10</strong>
+    </div>
+    <div id="questionTimerHud" class="question-timer-hud modern-battle-hud" aria-label="残り60秒"><strong id="questionTimerText">60</strong></div>
+    <button id="soundBtn" class="sound-btn">♪ ON</button>
+    <button id="pauseBtn" class="pause-btn" type="button" aria-label="ポーズ" title="ポーズ"><svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="4" width="5" height="16" rx="1.2"></rect><rect x="14" y="4" width="5" height="16" rx="1.2"></rect></svg></button>
+  </header>
+  <section class="battlefield"><div class="battle-corner battle-corner-tl" aria-hidden="true"></div><div class="battle-corner battle-corner-tr" aria-hidden="true"></div><div class="battle-corner battle-corner-bl" aria-hidden="true"></div><div class="battle-corner battle-corner-br" aria-hidden="true"></div>
+    <div id="battleBg" class="battle-bg"></div><div class="battle-shade"></div>
+    <div id="heroActor" class="actor hero"><div class="actor-name" id="heroName">ゆうしゃ</div><img id="heroImage" src="./assets/hero.png" alt="主人公"><div id="attackEffect" class="attack-effect" aria-hidden="true"><i class="silver-claw-stroke claw-a"></i><i class="silver-claw-stroke claw-b"></i><i class="silver-claw-stroke claw-c"></i></div></div>
+    <div id="heroLifeHud" class="hero-life-hud modern-battle-hud" aria-label="ライフ 3 / 3"><i></i><i></i><i></i></div>
+    <div id="specialHud" class="special-hud" aria-label="必殺技ゲージ">
+      <button id="specialBtn" class="special-btn" type="button" hidden>ひっさつ！</button>
+      <div class="special-meter" aria-hidden="true"><i id="specialFill"></i><span class="special-meter-shine"></span></div>
+    </div>
+    <div id="bossHpHud" class="boss-hp-hud" hidden aria-label="ボスHP">
+      <span id="bossShieldStatus" class="boss-shield-status" hidden>SHIELD</span>
+      <span class="boss-hp-label">BOSS HP</span>
+      <div class="boss-hp-meter" aria-hidden="true"><i id="bossHpFill"></i><span class="boss-hp-shine"></span></div>
+    </div>
+    <section class="question-panel">
+      <div class="question-cap">もんだい</div>
+      <div class="equation-box"><div id="mathProblem" class="math-problem">7+5=?</div></div>
+      <div id="feedbackText" class="feedback"></div>
+      <div class="choice-caption">こたえを えらぼう</div>
+      <div id="choices" class="choices"><button>11</button><button>12</button><button>13</button></div>
+    </section>
+    <div id="enemyActor" class="actor enemy"><div class="actor-name" id="enemyName">スライム</div><div class="boss-aura-layer" aria-hidden="true"><i class="boss-aura-ring"></i><i class="boss-aura-particles"></i></div><div id="enemySprite" class="actor-sprite"><img id="enemyImage" src="./assets/monster_front_1_1_1.png" alt="敵"></div></div>
+    <div id="answerMark" class="answer-mark" hidden aria-hidden="true"></div>
+  </section>
+</main>
+<div id="battleCountdownOverlay" class="battle-countdown-overlay" hidden aria-hidden="true">
+  <div id="battleCountdownText" class="battle-countdown-text">3</div>
+</div>
+
+<div id="gameOverOverlay" class="game-over-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="gameOverTitle">
+  <section class="game-over-card pause-card panel-gold">
+    <small>GAME OVER / REVIEW</small>
+    <h2 id="gameOverTitle">今回の振り返り</h2>
+    <p id="gameOverMessage">間違えた問題を確認して、もう一度挑戦しよう。</p>
+    <section class="game-over-review" aria-labelledby="gameOverReviewTitle">
+      <div class="game-over-review-head"><strong id="gameOverReviewTitle">間違えた問題</strong><span>直近3問まで</span></div>
+      <div id="gameOverReviewList" class="game-over-review-list" aria-live="polite"></div>
+    </section>
+    <p class="game-over-note">タイトルに戻ると、現在の冒険の途中経過は終了し、次に始めると STAGE 1・0 / <span data-run-total>75</span> からになります。</p>
+    <div class="pause-actions">
+      <button id="gameOverRetryBtn" class="menu-btn primary" type="button">ステージ最初から</button>
+      <button id="gameOverTitleBtn" class="menu-btn pause-danger" type="button">タイトルに戻る</button>
+    </div>
+  </section>
+</div>
+
+<div id="pauseOverlay" class="pause-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+  <section id="pauseMenu" class="pause-card panel-gold">
+    <small>PAUSE</small>
+    <h2 id="pauseTitle">ポーズ</h2>
+    <p>タイマーとバトルの動きを止めています。</p>
+    <div class="pause-actions">
+      <button id="pauseResumeBtn" class="menu-btn primary" type="button">つづける</button>
+      <button id="pauseTitleBtn" class="menu-btn" type="button">タイトルにもどる</button>
+    </div>
+  </section>
+  <section id="pauseConfirm" class="pause-card pause-confirm panel-gold" hidden>
+    <small>CONFIRM</small>
+    <h2>タイトルにもどりますか？</h2>
+    <p><strong>現在の冒険の途中経過はセーブされません。</strong><br>次に冒険を始めると、STAGE 1・0 / <span data-run-total>75</span> からのスタートになります。<br><span>モンスター図鑑やコレクションなど、すでに記録されたデータはそのまま残ります。</span></p>
+    <div class="pause-actions">
+      <button id="pauseCancelTitleBtn" class="menu-btn primary" type="button">ポーズにもどる</button>
+      <button id="pauseConfirmTitleBtn" class="menu-btn pause-danger" type="button">タイトルにもどる</button>
+    </div>
+  </section>
+</div>
+
+<div id="uiStyleConfirmOverlay" class="ui-style-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="uiStyleConfirmTitle">
+  <section class="ui-style-confirm-card panel-gold">
+    <small>DISPLAY STYLE</small>
+    <h2 id="uiStyleConfirmTitle">UI表示を切り替えますか？</h2>
+    <p id="uiStyleConfirmMessage">画面内の配置や余白などが一部変わります。ゲーム内容やセーブデータには影響しません。</p>
+    <p id="uiStyleConfirmNote" class="ui-style-confirm-note">NEW UIを標準表示として使用します。</p>
+    <div class="ui-style-confirm-actions">
+      <button id="uiStyleConfirmCancelBtn" class="menu-btn" type="button">キャンセル</button>
+      <button id="uiStyleConfirmAcceptBtn" class="menu-btn primary" type="button">切り替える</button>
+    </div>
+  </section>
+</div>
+
+<div id="mapOverlay" class="overlay" hidden>
+  <section class="map-card panel-gold">
+    <header class="map-head"><small id="mapModeLabel">WORLD MAP</small><h2 id="mapTitle">ぼうけんの ちず</h2></header>
+    <div class="map-content">
+      <button id="mapVisual" class="map-visual" type="button" aria-label="マップをタップして、つぎへ進む" disabled><img id="mapImage" src="./assets/world_map_v3_clean.png" alt="ワールドマップ"></button>
+      <aside class="map-tip-card" aria-live="polite"><div class="map-tip-label"><span>TIP</span><small id="mapTipCategory">必殺技</small></div><p id="mapTipText">せいかいすると、ひっさつゲージが 20% たまるよ。</p></aside>
+    </div>
+    <footer class="map-footer"><p id="mapMessage" class="map-message">目的地へ移動しています…</p><button id="mapNextBtn" class="map-next-btn" type="button" disabled>つぎへ <span aria-hidden="true">▶</span></button></footer>
+  </section>
+</div>
+<div id="stageOverlay" class="overlay" hidden><div id="stagePreview" class="stage-preview"></div><div class="stage-overlay-copy"><small id="stageOverlayLabel">STAGE 1</small><strong id="stageOverlayName">はじまりの もり</strong></div></div>
+<div id="stageClearOverlay" class="overlay clear-stage" hidden><div class="clear-flash"></div><div><small>STAGE CLEAR</small><strong id="stageClearName">はじまりの もり</strong><span id="stageClearGold">＋5 G</span></div></div>
+
+<div id="resultOverlay" class="overlay" hidden><section class="result-card panel-gold"><header class="result-head"><small>ADVENTURE RESULT</small><h2>リザルト</h2></header><div class="result-stats"><div><span>ミス</span><b id="resultMistakes">0</b></div><div><span>時間切れ</span><b id="resultTimeouts">0</b></div><div><span>やりなおし</span><b id="resultRestarts">0</b></div><div><span>獲得ゴルド</span><b id="resultGold">25 G</b></div></div><div class="result-log"><h3>まちがえた問題</h3><div id="resultErrors" class="result-errors"></div></div><div class="result-actions"><button id="replayBtn" class="menu-btn primary">最初から遊ぶ</button><button id="toTitleBtn" class="menu-btn">タイトルにもどる</button></div></section></div>
+
+<div id="rewardOverlay" class="overlay" hidden><section class="reward-card panel-gold"><small>NEW ITEM</small><div id="rewardIcon" class="reward-icon">✦</div><h2 id="rewardName">時空の鍵</h2><p id="rewardText">新しいアイテムを手に入れた！</p><button id="rewardOkBtn" class="menu-btn primary">OK</button></section></div>
+<script src="./app.js"></script>
+</body>
+</html>
