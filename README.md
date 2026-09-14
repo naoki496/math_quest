@@ -2,7 +2,7 @@
   <img src="./assets/naoki.png" alt="NAOKI" width="120">
 </p>
 
-<h1 align="center">さんすうクエスト</h1>
+<h1 align="center">さんすうクエスト（現在 本正規版作成中）</h1>
 
 <p align="center">
   <strong>計算で道をひらき、世界を進む。算数学習 × RPG バトル。</strong>
